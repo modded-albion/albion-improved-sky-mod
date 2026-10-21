@@ -1,0 +1,25 @@
+/******************************************************************************
+ * Copyright (c) 2026 Masters of Albion Reforged developers
+ *****************************************************************************/
+
+// CMake makes this file from data/moa_sky.bundle. Do not change it.
+
+#include <array>
+#include <cstddef>
+#include <span>
+
+namespace moa_mod::sky
+{
+
+namespace
+{
+// One more byte than the bundle, so that the array is never empty.
+constexpr std::byte k_Bundle[] = {@MOA_SKY_BUNDLE_BYTES@ std::byte {0}};
+} // namespace
+
+std::span<const std::byte> EmbeddedBundle()
+{
+	return std::span<const std::byte>(k_Bundle).first(std::size(k_Bundle) - 1);
+}
+
+} // namespace moa_mod::sky
