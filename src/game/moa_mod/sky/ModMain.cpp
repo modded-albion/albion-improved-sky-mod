@@ -7,12 +7,14 @@
 // readouts to the menu bar, and runs after `Marcos_Procedural_Sky.Update`: the real moon, and the night sky of the
 // AssetBundle in this DLL (the stars, the aurora, the alignment sky and the blood moon).
 
+#include <algorithm>
 #include <chrono>
 #include <exception>
 #include <filesystem>
 #include <format>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -193,6 +195,110 @@ moa::Result<void> Load(SkyModState& state, const nlohmann::json& object, bool mo
 	return text + std::format("\nSky alignment now: {:+.2f}", theme.value("theme", 0.0));
 }
 
+/// The sky part of the mod, for a query that changes it. Throw an error if the sky part is off.
+[[nodiscard]] SkyMod& SkyOf(SkyModState& state)
+{
+	if (!state.sky)
+	{
+		throw std::runtime_error("the sky mod is off");
+	}
+	return *state.sky;
+}
+
+/// Register the queries of the inspector. The loader calls them on the main thread. A refused query does not stop the
+/// mod: the log tells it.
+void RegisterQueries(SkyModState& state)
+{
+	auto& host = *state.host;
+	if (!host.HasQueries())
+	{
+		spdlog::info("sky mod: the loader has no inspector queries");
+		return;
+	}
+	bool ok = host.AddQuery("sky.state", "The state of the night sky, the theme and the evil night.",
+	                        [&state](const nlohmann::json& /*params*/) {
+		                        if (!state.sky)
+		                        {
+			                        return nlohmann::json {{"installed", false}, {"status", state.skyStatus.Describe()}};
+		                        }
+		                        auto result = state.sky->State();
+		                        result["status"] = state.skyStatus.Describe();
+		                        return result;
+	                        });
+	ok = host.AddQuery("sky.show", "Show the test quad also in the day. Parameter: on (true or false). For tests only.",
+	                   [&state](const nlohmann::json& params) {
+		                   const auto on = params.value("on", true);
+		                   SkyOf(state).ForceShow(on);
+		                   return nlohmann::json {{"forceShow", on}};
+	                   }) &&
+	     ok;
+	ok = host.AddQuery("sky.skybox", "Use the skybox of the mod (on true) or the skybox of the game (on false). Parameter: on.",
+	                   [&state](const nlohmann::json& params) {
+		                   auto result = SkyOf(state).SkyboxTest(params.value("on", false));
+		                   if (!result)
+		                   {
+			                   throw std::runtime_error(result.GetError().message);
+		                   }
+		                   return nlohmann::json {{"skyboxSwapped", *result}};
+	                   }) &&
+	     ok;
+	ok = host.AddQuery("sky.debug",
+	                   "A test mode of the moon shader (moon, 0 to 5), a scale of the moon brightness (moonBrightness, 0 "
+	                   "to 4) and a restart of the moon renderer (restartRenderer). For tests only.",
+	                   [&state](const nlohmann::json& params) {
+		                   auto& sky = SkyOf(state);
+		                   const auto mode = std::clamp(params.value("moon", 0), 0, 5);
+		                   const auto restart = params.value("restartRenderer", false);
+		                   const auto brightness = std::clamp(params.value("moonBrightness", 1.0), 0.0, 4.0);
+		                   sky.SetMoonDebug(mode);
+		                   sky.SetMoonBrightnessScale(static_cast<float>(brightness));
+		                   if (restart)
+		                   {
+			                   sky.RestartMoonRenderer();
+		                   }
+		                   return nlohmann::json {
+		                       {"moonDebug", mode}, {"restartRenderer", restart}, {"moonBrightness", brightness}};
+	                   }) &&
+	     ok;
+	ok = host.AddQuery("sky.theme",
+	                   "A test theme of the sky (theme, -1 to 1, or null for the theme of the settings), and snap to "
+	                   "show it at once. For tests only.",
+	                   [&state](const nlohmann::json& params) {
+		                   auto& sky = SkyOf(state);
+		                   std::optional<double> theme;
+		                   if (const auto value = params.find("theme"); value != params.end() && value->is_number())
+		                   {
+			                   theme = std::clamp(value->get<double>(), -1.0, 1.0);
+		                   }
+		                   const auto snap = params.value("snap", false);
+		                   sky.SetThemeTest(theme, snap);
+		                   return nlohmann::json {{"theme", theme ? nlohmann::json(*theme) : nlohmann::json()}, {"snap", snap}};
+	                   }) &&
+	     ok;
+	ok = host.AddQuery("moon.state", "The sky of the game, the moon that the mod calculates, and the state of the moon mod.",
+	                   [&state](const nlohmann::json& /*params*/) -> nlohmann::json {
+		                   auto sky = state.managed->SingletonInstance("Marcos_Procedural_Sky");
+		                   if (!sky)
+		                   {
+			                   return {{"error", sky.GetError().message}};
+		                   }
+		                   if (state.moon)
+		                   {
+			                   return state.moon->State(*sky);
+		                   }
+		                   // The moon mod did not start: show the sky and the moon that the mod calculates, and change
+		                   // nothing.
+		                   ModStatus status("moon preview");
+		                   moon::MoonMod preview(*state.managed, *state.moonBindings, state.live.moon, status);
+		                   return preview.State(*sky);
+	                   }) &&
+	     ok;
+	if (!ok)
+	{
+		spdlog::warn("sky mod: the loader refused a query; see the log of the loader");
+	}
+}
+
 /// Register the settings, the fields, the hotkey, the readouts, the status and the method callback.
 bool Register(SkyModState& state)
 {
@@ -302,6 +408,7 @@ uint32_t Init(const MoaHostApi* api, uint32_t apiVersion)
 		spdlog::error("sky mod: the loader refused a registration; the sky mod does not start");
 		return 0;
 	}
+	RegisterQueries(*state);
 	s_state = std::move(state);
 	return 1;
 }
