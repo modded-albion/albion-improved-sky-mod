@@ -28,21 +28,21 @@ add_subdirectory(external/common)
 # the evil night, the values of the shaders and the settings.
 add_library(
   moa_sky_core STATIC
-  src/core/include/moa_mod/moon/MoonPlacement.h
-  src/core/include/moa_mod/sky/AuroraMode.h
-  src/core/include/moa_mod/sky/EvilNight.h
-  src/core/include/moa_mod/sky/EvilNightSettings.h
-  src/core/include/moa_mod/sky/SkyRules.h
-  src/core/include/moa_mod/sky/SkyTheme.h
-  src/core/include/moa_mod/sky/SkyUniforms.h
-  src/core/include/moa_mod/sky/SkyboxSettings.h
-  src/core/src/sky/EvilNight.cpp
-  src/core/src/sky/SkyRules.cpp
-  src/core/src/sky/SkyTheme.cpp
-  src/core/src/sky/SkyUniforms.cpp
-  src/core/src/sky/SkyboxSettings.cpp
+  src/core/moa_mod/moon/MoonPlacement.h
+  src/core/moa_mod/sky/AuroraMode.h
+  src/core/moa_mod/sky/EvilNight.h
+  src/core/moa_mod/sky/EvilNightSettings.h
+  src/core/moa_mod/sky/SkyRules.h
+  src/core/moa_mod/sky/SkyTheme.h
+  src/core/moa_mod/sky/SkyUniforms.h
+  src/core/moa_mod/sky/SkyboxSettings.h
+  src/core/moa_mod/sky/EvilNight.cpp
+  src/core/moa_mod/sky/SkyRules.cpp
+  src/core/moa_mod/sky/SkyTheme.cpp
+  src/core/moa_mod/sky/SkyUniforms.cpp
+  src/core/moa_mod/sky/SkyboxSettings.cpp
 )
-target_include_directories(moa_sky_core PUBLIC src/core/include)
+target_include_directories(moa_sky_core PUBLIC src/core)
 target_link_libraries(moa_sky_core PUBLIC moa_common moa_astro moa_mod_core)
 moa_set_warnings(moa_sky_core)
 
