@@ -41,6 +41,22 @@ The DLL exports `MoaModApiVersion`, `MoaModGetInfo` (id `better_skybox`), `MoaMo
 The parts start when the loader gave both objects (`moon` and `sky`), before the first frame. `MoaModShutdown` gives
 the game its skybox and its moon material back.
 
+## Inspector queries
+
+When the loader has inspector queries, the mod adds these queries (the inspector mod calls them; the loader runs them
+on the main thread). They are the sky and moon queries of the research mod, with the same parameters and answers:
+
+| Query | What it does |
+|---|---|
+| `sky.state` | The state of the night sky, the theme and the evil night, or `installed` false |
+| `sky.show` | Shows the test quad also in the day (`on`). For tests only |
+| `sky.skybox` | Uses the skybox of the mod (`on` true) or of the game (`on` false) |
+| `sky.debug` | A test mode of the moon shader (`moon` 0 to 5), `moonBrightness` (0 to 4) and `restartRenderer`. For tests only |
+| `sky.theme` | A test theme of the sky (`theme` -1 to 1, or null) and `snap`. For tests only |
+| `moon.state` | The sky of the game, the moon that the mod calculates and the state of the moon mod |
+
+A loader with no queries (the first loader of version 1) only writes a line to the log; the mod works.
+
 ## Build
 
 Requirements: Visual Studio with the C++ tools, and the vcpkg checkout of Masters of Albion Reforged.
