@@ -1,0 +1,13 @@
+# Unity makes these folders. They stay out of git.
+/Library/
+/Temp/
+/Logs/
+/obj/
+/UserSettings/
+/Build/
+/Bundles/
+*.csproj
+*.sln
+# The bundle build makes this folder.
+/Assets/Generated/
+/Assets/Generated.meta
