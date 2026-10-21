@@ -21,15 +21,15 @@ the DLL. At the first frames the mod writes the bundle to `%LOCALAPPDATA%\Master
 (outside the game folder) and loads it with `AssetBundle.LoadFromFileAsync`. Without the file at build time, the DLL
 has no bundle and the night sky stays off.
 
-The Unity project that makes the bundle is in `unity/moa_sky` (Unity 6000.5.7f1, URP; no `Library` or `Temp`
-folder). `python unity/moa_sky/build_bundles.py` builds the bundle in batch mode and copies it to
-`data/moa_sky.bundle`. Then configure and compile again. `unity/moa_sky/Data/stars_bsc5.bin` is the star table (from
+The Unity project that makes the bundle is in `unity` (Unity 6000.5.7f1, URP; no `Library` or `Temp`
+folder). `python unity/build_bundles.py` builds the bundle in batch mode and copies it to
+`data/moa_sky.bundle`. Then configure and compile again. `unity/Data/stars_bsc5.bin` is the star table (from
 the Yale Bright Star Catalogue, `Data/make_stars.py`); a test reads it.
 
 ## How it uses the loader
 
 The DLL exports `MoaModApiVersion`, `MoaModGetInfo` (id `better_skybox`), `MoaModInit` and `MoaModShutdown`
-(`src/game/moa_mod/sky/ModMain.cpp`). In `MoaModInit` it:
+(`src/game/ModMain.cpp`). In `MoaModInit` it:
 
 - finds the IL2CPP exports and the managed names that it needs itself (common `moa_mod_game`). A missing name of the
   moon stops the init with 0, so the loader unloads the mod and the game continues;
@@ -71,6 +71,14 @@ Dependencies: vcpkg in manifest mode (`vcpkg.json`: nlohmann-json, spdlog, Googl
 `x64-windows-static`. The presets use `VCPKG_ROOT` = `D:/masters_of_albion/masters_of_albion_reforged/vcpkg` (the
 vcpkg checkout of the reforged repository; this repository has no vcpkg submodule), the binary cache
 `D:/masters_of_albion/cache/vcpkg-archives` and the downloads `D:/masters_of_albion/cache/vcpkg-downloads`.
+
+## Folders and include lines
+
+Each library has one folder: `src/core` (`moa_sky_core`, the moon and the sky) and `src/game` (`better_skybox.dll`).
+The targets put `src` on the include path, and common puts `external/common/src` there. An include line thus names the
+library folder and the file, for example `#include <core/SkyRules.h>`, `#include "game/SkyMod.h"` or
+`#include <astro/Moon.h>`. The folders of common have other names (for example `mod_core`, `mod_game`), so an
+include path never finds two files. The C++ namespaces do not follow the folders.
 
 ## The link to common
 

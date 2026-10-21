@@ -9,11 +9,11 @@
 #include <array>
 #include <string_view>
 
-#include <moa/astro/Moon.h>
-#include <moa/astro/Sky.h>
-#include <moa_mod/UnityMath.h>
-#include <moa_mod/sky/AuroraMode.h>
-#include <moa_mod/sky/SkyTheme.h>
+#include <astro/Moon.h>
+#include <astro/Sky.h>
+#include <core/AuroraMode.h>
+#include <core/SkyTheme.h>
+#include <mod_core/UnityMath.h>
 
 namespace moa_mod::sky
 {

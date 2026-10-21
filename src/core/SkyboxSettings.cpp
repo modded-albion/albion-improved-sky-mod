@@ -7,8 +7,8 @@
 #include <array>
 #include <format>
 
-#include <moa/astro/Moon.h>
-#include <moa_mod/sky/SkyboxSettings.h>
+#include <astro/Moon.h>
+#include <core/SkyboxSettings.h>
 
 namespace moa_mod
 {

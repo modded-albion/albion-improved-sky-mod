@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-#include <moa_mod/sky/SkyTheme.h>
+#include <core/SkyTheme.h>
 
 namespace moa_mod::sky
 {

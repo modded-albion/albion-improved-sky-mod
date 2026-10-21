@@ -18,19 +18,19 @@
 #include <string>
 #include <utility>
 
-#include <moa_mod/api/ModApi.h>
-#include <moa_mod/sdk/HostLogSink.h>
-#include <moa_mod/sdk/ModHost.h>
-#include <moa_mod/sky/SkyRules.h>
-#include <moa_mod/sky/SkyboxSettings.h>
+#include <core/SkyRules.h>
+#include <core/SkyboxSettings.h>
+#include <mod_api/ModApi.h>
+#include <mod_sdk/HostLogSink.h>
+#include <mod_sdk/ModHost.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
-#include "moa_mod/Il2Cpp.h"
-#include "moa_mod/Managed.h"
-#include "moa_mod/ModStatus.h"
-#include "moa_mod/moon/MoonMod.h"
-#include "moa_mod/sky/SkyMod.h"
+#include "game/MoonMod.h"
+#include "game/SkyMod.h"
+#include "mod_game/Il2Cpp.h"
+#include "mod_game/Managed.h"
+#include "mod_game/ModStatus.h"
 
 namespace moa_mod::sky
 {

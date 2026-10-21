@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-#include <moa_mod/sky/EvilNight.h>
+#include <core/EvilNight.h>
 
 namespace moa_mod::sky
 {

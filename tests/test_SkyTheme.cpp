@@ -6,10 +6,10 @@
 
 #include <limits>
 
+#include <core/AuroraMode.h>
+#include <core/SkyTheme.h>
+#include <core/SkyboxSettings.h>
 #include <gtest/gtest.h>
-#include <moa_mod/sky/AuroraMode.h>
-#include <moa_mod/sky/SkyTheme.h>
-#include <moa_mod/sky/SkyboxSettings.h>
 
 using namespace moa_mod;
 using namespace moa_mod::sky;

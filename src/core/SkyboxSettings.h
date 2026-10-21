@@ -11,10 +11,10 @@
 #include <string_view>
 #include <vector>
 
-#include <moa/common/Result.h>
-#include <moa_mod/SettingsFields.h>
-#include <moa_mod/sky/AuroraMode.h>
-#include <moa_mod/sky/EvilNightSettings.h>
+#include <common/Result.h>
+#include <core/AuroraMode.h>
+#include <core/EvilNightSettings.h>
+#include <mod_core/SettingsFields.h>
 #include <nlohmann/json.hpp>
 
 namespace moa_mod

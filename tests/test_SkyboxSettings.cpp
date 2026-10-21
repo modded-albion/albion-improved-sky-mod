@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
+#include <astro/StarTable.h>
+#include <core/SkyboxSettings.h>
 #include <gtest/gtest.h>
-#include <moa/astro/StarTable.h>
-#include <moa_mod/sky/SkyboxSettings.h>
 #include <nlohmann/json.hpp>
 
 using namespace moa_mod;

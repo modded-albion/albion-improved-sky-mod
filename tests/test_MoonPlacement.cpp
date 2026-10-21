@@ -7,8 +7,8 @@
 #include <numbers>
 #include <utility>
 
+#include <core/MoonPlacement.h>
 #include <gtest/gtest.h>
-#include <moa_mod/moon/MoonPlacement.h>
 
 using namespace moa_mod;
 using namespace moa_mod::moon;

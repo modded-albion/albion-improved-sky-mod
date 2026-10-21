@@ -8,14 +8,14 @@
 #include <optional>
 #include <string>
 
-#include <moa/astro/Moon.h>
-#include <moa/common/Result.h>
-#include <moa_mod/UnityMath.h>
-#include <moa_mod/sky/SkyboxSettings.h>
+#include <astro/Moon.h>
+#include <common/Result.h>
+#include <core/SkyboxSettings.h>
+#include <mod_core/UnityMath.h>
 #include <nlohmann/json.hpp>
 
-#include "moa_mod/Managed.h"
-#include "moa_mod/ModStatus.h"
+#include "mod_game/Managed.h"
+#include "mod_game/ModStatus.h"
 
 namespace moa_mod::moon
 {

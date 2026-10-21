@@ -2,7 +2,7 @@
  * Copyright (c) 2026 Masters of Albion Reforged developers
  *****************************************************************************/
 
-#include "moa_mod/sky/SkyMod.h"
+#include "game/SkyMod.h"
 
 #include <algorithm>
 #include <format>
@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include <moa/astro/Moon.h>
+#include <astro/Moon.h>
 #include <spdlog/spdlog.h>
 
 namespace moa_mod::sky

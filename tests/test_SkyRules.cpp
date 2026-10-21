@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <array>
 
+#include <core/SkyRules.h>
+#include <core/SkyboxSettings.h>
 #include <gtest/gtest.h>
-#include <moa_mod/sky/SkyRules.h>
-#include <moa_mod/sky/SkyboxSettings.h>
 
 using namespace moa_mod;
 using namespace moa_mod::sky;

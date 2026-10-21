@@ -10,7 +10,7 @@
 #include <span>
 #include <string_view>
 
-#include <moa_mod/UnityMath.h>
+#include <mod_core/UnityMath.h>
 
 /// The parts of the sky mod that do not need the game.
 namespace moa_mod::sky

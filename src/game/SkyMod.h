@@ -15,15 +15,15 @@
 #include <span>
 #include <string>
 
-#include <moa/common/Result.h>
-#include <moa_mod/sky/EvilNight.h>
-#include <moa_mod/sky/SkyRules.h>
-#include <moa_mod/sky/SkyUniforms.h>
-#include <moa_mod/sky/SkyboxSettings.h>
+#include <common/Result.h>
+#include <core/EvilNight.h>
+#include <core/SkyRules.h>
+#include <core/SkyUniforms.h>
+#include <core/SkyboxSettings.h>
 #include <nlohmann/json.hpp>
 
-#include "moa_mod/Managed.h"
-#include "moa_mod/ModStatus.h"
+#include "mod_game/Managed.h"
+#include "mod_game/ModStatus.h"
 
 namespace moa_mod::sky
 {

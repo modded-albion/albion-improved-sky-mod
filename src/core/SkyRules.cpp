@@ -2,7 +2,7 @@
  * Copyright (c) 2026 Masters of Albion Reforged developers
  *****************************************************************************/
 
-#include "moa_mod/sky/SkyRules.h"
+#include "core/SkyRules.h"
 
 #include <cmath>
 

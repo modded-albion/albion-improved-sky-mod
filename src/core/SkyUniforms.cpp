@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <numbers>
 
-#include <moa_mod/sky/SkyUniforms.h>
+#include <core/SkyUniforms.h>
 
 namespace moa_mod::sky
 {

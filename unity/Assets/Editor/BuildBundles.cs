@@ -15,7 +15,7 @@ public static class BuildBundles
     const string k_RendererPath = "Assets/Settings/MoaSkyRenderer.asset";
     const string k_OutputFolder = "Bundles/StandaloneWindows64";
     // The mod embeds the bundle from this file.
-    const string k_ModCopy = "../../data/moa_sky.bundle";
+    const string k_ModCopy = "../data/moa_sky.bundle";
 
     // A material of the bundle: the mod loads it by its name. The textures go into the material.
     struct MaterialSpec

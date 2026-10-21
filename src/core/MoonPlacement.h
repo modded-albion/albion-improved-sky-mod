@@ -8,8 +8,8 @@
 
 #include <numbers>
 
-#include <moa/astro/Moon.h>
-#include <moa_mod/UnityMath.h>
+#include <astro/Moon.h>
+#include <mod_core/UnityMath.h>
 
 namespace moa_mod::moon
 {

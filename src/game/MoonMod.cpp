@@ -2,13 +2,13 @@
  * Copyright (c) 2026 Masters of Albion Reforged developers
  *****************************************************************************/
 
-#include "moa_mod/moon/MoonMod.h"
+#include "game/MoonMod.h"
 
 #include <array>
 #include <format>
 #include <utility>
 
-#include <moa_mod/moon/MoonPlacement.h>
+#include <core/MoonPlacement.h>
 
 namespace moa_mod::moon
 {

@@ -4,9 +4,9 @@
 
 #include <cmath>
 
+#include <core/EvilNight.h>
+#include <core/SkyboxSettings.h>
 #include <gtest/gtest.h>
-#include <moa_mod/sky/EvilNight.h>
-#include <moa_mod/sky/SkyboxSettings.h>
 
 using namespace moa_mod;
 using namespace moa_mod::sky;

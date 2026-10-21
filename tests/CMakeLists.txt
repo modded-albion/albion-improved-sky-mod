@@ -11,7 +11,7 @@ add_executable(
 )
 target_link_libraries(moa_sky_tests PRIVATE moa_sky_core GTest::gtest_main)
 # The star table of the Unity project: our own data from the Yale Bright Star Catalogue, not game data.
-target_compile_definitions(moa_sky_tests PRIVATE MOA_STAR_TABLE="${PROJECT_SOURCE_DIR}/unity/moa_sky/Data/stars_bsc5.bin")
+target_compile_definitions(moa_sky_tests PRIVATE MOA_STAR_TABLE="${PROJECT_SOURCE_DIR}/unity/Data/stars_bsc5.bin")
 moa_set_warnings(moa_sky_tests)
 
 include(GoogleTest)

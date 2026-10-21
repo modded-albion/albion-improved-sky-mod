@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the AssetBundle of the sky mod with Unity 6000.5.7f1 in batch mode.
 
-Usage: python unity/moa_sky/build_bundles.py [--unity PATH]
+Usage: python unity/build_bundles.py [--unity PATH]
 The log goes to D:/masters_of_albion/runs/moa_sky-bundle.log (or --log).
 """
 

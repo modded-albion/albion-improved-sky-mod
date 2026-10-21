@@ -6,8 +6,8 @@
 
 #include <string_view>
 
-#include <moa_mod/UnityMath.h>
-#include <moa_mod/sky/EvilNightSettings.h>
+#include <core/EvilNightSettings.h>
+#include <mod_core/UnityMath.h>
 
 namespace moa_mod::sky
 {

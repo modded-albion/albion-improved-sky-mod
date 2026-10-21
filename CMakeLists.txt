@@ -28,26 +28,26 @@ add_subdirectory(external/common)
 # the evil night, the values of the shaders and the settings.
 add_library(
   moa_sky_core STATIC
-  src/core/moa_mod/moon/MoonPlacement.h
-  src/core/moa_mod/sky/AuroraMode.h
-  src/core/moa_mod/sky/EvilNight.h
-  src/core/moa_mod/sky/EvilNightSettings.h
-  src/core/moa_mod/sky/SkyRules.h
-  src/core/moa_mod/sky/SkyTheme.h
-  src/core/moa_mod/sky/SkyUniforms.h
-  src/core/moa_mod/sky/SkyboxSettings.h
-  src/core/moa_mod/sky/EvilNight.cpp
-  src/core/moa_mod/sky/SkyRules.cpp
-  src/core/moa_mod/sky/SkyTheme.cpp
-  src/core/moa_mod/sky/SkyUniforms.cpp
-  src/core/moa_mod/sky/SkyboxSettings.cpp
+  src/core/MoonPlacement.h
+  src/core/AuroraMode.h
+  src/core/EvilNight.h
+  src/core/EvilNightSettings.h
+  src/core/SkyRules.h
+  src/core/SkyTheme.h
+  src/core/SkyUniforms.h
+  src/core/SkyboxSettings.h
+  src/core/EvilNight.cpp
+  src/core/SkyRules.cpp
+  src/core/SkyTheme.cpp
+  src/core/SkyUniforms.cpp
+  src/core/SkyboxSettings.cpp
 )
-target_include_directories(moa_sky_core PUBLIC src/core)
+target_include_directories(moa_sky_core PUBLIC src)
 target_link_libraries(moa_sky_core PUBLIC moa_common moa_astro moa_mod_core)
 moa_set_warnings(moa_sky_core)
 
 if (WIN32)
-  # The AssetBundle of the sky (unity/moa_sky/build_bundles.py writes data/moa_sky.bundle) goes into the DLL, because
+  # The AssetBundle of the sky (unity/build_bundles.py writes data/moa_sky.bundle) goes into the DLL, because
   # the mod folder of the game gets only the DLL. Without the file, the DLL has no bundle and the night sky stays off.
   set(MOA_SKY_BUNDLE ${CMAKE_CURRENT_SOURCE_DIR}/data/moa_sky.bundle)
   set(MOA_SKY_BUNDLE_SOURCE ${CMAKE_CURRENT_BINARY_DIR}/SkyBundleData.cpp)
@@ -61,14 +61,14 @@ if (WIN32)
 
   add_library(
     better_skybox SHARED
-    src/game/moa_mod/moon/MoonMod.cpp
-    src/game/moa_mod/moon/MoonMod.h
-    src/game/moa_mod/sky/ModMain.cpp
-    src/game/moa_mod/sky/SkyMod.cpp
-    src/game/moa_mod/sky/SkyMod.h
+    src/game/MoonMod.cpp
+    src/game/MoonMod.h
+    src/game/ModMain.cpp
+    src/game/SkyMod.cpp
+    src/game/SkyMod.h
     ${MOA_SKY_BUNDLE_SOURCE}
   )
-  target_include_directories(better_skybox PRIVATE src/game)
+  target_include_directories(better_skybox PRIVATE src)
   target_link_libraries(better_skybox PRIVATE moa_sky_core moa_mod_game moa_mod_sdk)
   moa_set_warnings(better_skybox)
 endif ()
