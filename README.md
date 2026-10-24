@@ -1,61 +1,11 @@
 # Masters of Albion: better skybox
 
-A mod DLL (`better_skybox.dll`) for the mod loader of Masters of Albion (the project `mod_loader`). It is the moon and
-sky work of the research mod of Masters of Albion Reforged (`tools/research_mod`, the `moon` and `sky` parts, and the
-Unity project `tools/unity/moa_sky`), moved into its own DLL. That repository stays as it is.
+A mod DLL (`better_skybox.dll`) for the mod loader of Masters of Albion (the project `mod_loader`).
 
-What it does:
-
-- **The real moon** (`moon.enabled`): the phase, the place and the light of the moon come from the clock of the
-  computer and the place of the observer (`moon.latitude`, `moon.longitude`, `moon.northDegrees`).
-- **The night sky** (`sky.enabled`, after a restart of the game): the skybox of the mod with the real stars, the
-  aurora (`off`, `alignment`, `always`), the moon as a lit ball with the real phase, the sky of the alignment of the
-  player (black for neutral, a faint rainbow for good, dark red for evil), and the blood moon of the evil night.
-- Readouts in the menu Sky: the moon now (phase, lit part, age, altitude, azimuth) and the alignment of the player.
-
-## The AssetBundle
-
-The shaders and materials of the night sky are in an AssetBundle, `data/moa_sky.bundle`. The build puts the bytes of
-the file into the DLL (`cmake/SkyBundleData.cpp.in`, made at configure time), because the mod gives the game only
-the DLL. At the first frames the mod writes the bundle to `%LOCALAPPDATA%\MastersOfAlbionReforged\moa_sky.bundle`
-(outside the game folder) and loads it with `AssetBundle.LoadFromFileAsync`. Without the file at build time, the DLL
-has no bundle and the night sky stays off.
-
-The Unity project that makes the bundle is in `unity` (Unity 6000.5.7f1, URP; no `Library` or `Temp`
-folder). `python unity/build_bundles.py` builds the bundle in batch mode and copies it to
-`data/moa_sky.bundle`. Then configure and compile again. `unity/Data/stars_bsc5.bin` is the star table (from
-the Yale Bright Star Catalogue, `Data/make_stars.py`); a test reads it.
-
-## How it uses the loader
-
-The DLL exports `MoaModApiVersion`, `MoaModGetInfo` (id `better_skybox`), `MoaModInit` and `MoaModShutdown`
-(`src/game/ModMain.cpp`). In `MoaModInit` it:
-
-- finds the IL2CPP exports and the managed names that it needs itself (common `moa_mod_game`). A missing name of the
-  moon stops the init with 0, so the loader unloads the mod and the game continues;
-- registers the settings sections `moon` and `sky` of mods.json, the fields of the menu Sky (`SkyboxFields`), the
-  hotkey `toggleMoon` (Ctrl+Shift+F6), two readouts and a status reader;
-- asks the loader for two callbacks after `Marcos_Procedural_Sky.Update` (the moon, then the sky). The loader
-  installs the hook.
-
-The parts start when the loader gave both objects (`moon` and `sky`), before the first frame. `MoaModShutdown` gives
-the game its skybox and its moon material back.
-
-## Inspector queries
-
-When the loader has inspector queries, the mod adds these queries (the inspector mod calls them; the loader runs them
-on the main thread). They are the sky and moon queries of the research mod, with the same parameters and answers:
-
-| Query | What it does |
-|---|---|
-| `sky.state` | The state of the night sky, the theme and the evil night, or `installed` false |
-| `sky.show` | Shows the test quad also in the day (`on`). For tests only |
-| `sky.skybox` | Uses the skybox of the mod (`on` true) or of the game (`on` false) |
-| `sky.debug` | A test mode of the moon shader (`moon` 0 to 5), `moonBrightness` (0 to 4) and `restartRenderer`. For tests only |
-| `sky.theme` | A test theme of the sky (`theme` -1 to 1, or null) and `snap`. For tests only |
-| `moon.state` | The sky of the game, the moon that the mod calculates and the state of the moon mod |
-
-A loader with no queries (the first loader of version 1) only writes a line to the log; the mod works.
+- **The real moon!** Dynamic phase, placement, and light of the moon using the OS clock.
+- **The night sky!** Adds stars, auroras.
+- **Player alignment** affects the skybox and the moon. Auroras appear if you're good and the moon turns blood-red
+  if you're evil.
 
 ## Build
 
@@ -66,36 +16,13 @@ git -c protocol.file.allow=always submodule update --init
 tools\preset.bat x64-release
 ```
 
-The result is `build\x64-release\better_skybox.dll`. It imports only `KERNEL32.dll` (static C runtime).
-Dependencies: vcpkg in manifest mode (`vcpkg.json`: nlohmann-json, spdlog, GoogleTest) with the triplet
-`x64-windows-static`. The presets use `VCPKG_ROOT` = `D:/masters_of_albion/masters_of_albion_reforged/vcpkg` (the
-vcpkg checkout of the reforged repository; this repository has no vcpkg submodule), the binary cache
-`D:/masters_of_albion/cache/vcpkg-archives` and the downloads `D:/masters_of_albion/cache/vcpkg-downloads`.
-
-## Folders and include lines
-
-Each library has one folder: `src/core` (`moa_sky_core`, the moon and the sky) and `src/game` (`better_skybox.dll`).
-The targets put `src` on the include path, and common puts `external/common/src` there. An include line thus names the
-library folder and the file, for example `#include <core/SkyRules.h>`, `#include "game/SkyMod.h"` or
-`#include <astro/Moon.h>`. The folders of common have other names (for example `mod_core`, `mod_game`), so an
-include path never finds two files. The C++ namespaces do not follow the folders.
-
-## The link to common
-
-`external/common` is a git submodule with the URL `D:/masters_of_albion/projects/common` (an absolute local path).
-Git 2.43 refuses local file submodules by default, so each submodule command needs `-c protocol.file.allow=always`.
-`CMakeLists.txt` includes it with `add_subdirectory(external/common)`. The moon and star maths (`moa_astro`) is in
-common.
-
 ## Tests
 
-`ctest --preset x64-release` runs the GoogleTest tests: the place of the moon, the rules of the sky, the theme of the
-alignment, the evil night, the values of the shaders, the settings and fields, the moon readout and the star table.
+`ctest --preset x64-release` runs the GoogleTest tests.
 
-## Install (not done by the build)
+## How to install
 
-The DLL goes into `<Steam game>\mods\`, next to the loader `version.dll` in the game folder. Only the user starts the
-install, with the install tool of `mod_loader`:
+The DLL goes into `<Steam game>\mods\`, next to the loader `version.dll` in the game folder.
 
 ```bat
 python ..\mod_loader\tools\install.py mods add build\x64-release\better_skybox.dll
